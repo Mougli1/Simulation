@@ -24,6 +24,7 @@ p = 6277101735386680763835789423207666416083908700390324961279
 
 # Initialisation de la courbe
 curve = EllipticCurve(a, b, p)
+
 class Point:
     """
     Classe pour représenter un point sur une courbe elliptique.
@@ -31,6 +32,34 @@ class Point:
     def __init__(self, x, y):
         self.x = x
         self.y = y
+def inverse_mod(k, p):
+    """
+    Calcule l'inverse modulaire de k modulo p.
+    """
+    if k == 0:
+        raise ZeroDivisionError('division by zero')
+
+    if k < 0:
+        # k inversé est négatif, donc on le rend positif
+        return p - inverse_mod(-k, p)
+
+    # Algorithme d'Euclide étendu
+    s, old_s = 0, 1
+    t, old_t = 1, 0
+    r, old_r = p, k
+
+    while r != 0:
+        quotient = old_r // r
+        old_r, r = r, old_r - quotient * r
+        old_s, s = s, old_s - quotient * s
+        old_t, t = t, old_t - quotient * t
+
+    gcd, x, y = old_r, old_s, old_t
+
+    assert gcd == 1
+    assert (k * x) % p == 1
+
+    return x % p
 
 def point_addition(p1, p2, curve):
     """
@@ -44,11 +73,25 @@ def point_addition(p1, p2, curve):
         slope = (3 * p1.x * p1.x + curve.a) * pow(2 * p1.y, -1, curve.p)
     else:
         # Point addition
-        slope = (p2.y - p1.y) * pow(p2.x - p1.x, -1, curve.p)
-
+        slope = (p2.y - p1.y) * inverse_mod(p2.x - p1.x, curve.p)
     x3 = (slope * slope - p1.x - p2.x) % curve.p
     y3 = (slope * (p1.x - x3) - p1.y) % curve.p
     return Point(x3, y3)
+
+def multiply_point(point, multiplier, curve):
+    """
+    Multiplie un point par un entier en utilisant l'algorithme "double and add".
+    """
+    result = Point(float('inf'), float('inf'))  # Point à l'infini
+    addend = point
+
+    while multiplier:
+        if multiplier & 1:
+            result = point_addition(result, addend, curve)
+        addend = point_addition(addend, addend, curve)
+        multiplier >>= 1
+
+    return result
 
 # Point de base pour ECC (exemple)
 G = Point(602046282375688656758213480587526111916698976636884684818,
@@ -57,37 +100,20 @@ G = Point(602046282375688656758213480587526111916698976636884684818,
 # Génération de la clé privée (nombre aléatoire)
 private_key = secrets.randbelow(curve.p)
 
-# Génération de la clé publique (multiplication du point de base par la clé privée)
-public_key = G
-for _ in range(private_key - 1):
-    public_key = point_addition(public_key, G, curve)
+# Génération de la clé publique en utilisant la multiplication de points
+public_key = multiply_point(G, private_key, curve)
+
+# Chiffrement du message (modifié pour utiliser multiply_point)
 def encrypt_point(point, public_key, curve):
-    """
-    Chiffre un point en utilisant la clé publique.
-    """
     k = secrets.randbelow(curve.p)
-    c1 = G
-    for _ in range(k - 1):
-        c1 = point_addition(c1, G, curve)
-
-    c2 = point
-    for _ in range(k - 1):
-        c2 = point_addition(c2, public_key, curve)
-
+    c1 = multiply_point(G, k, curve)
+    c2 = point_addition(point, multiply_point(public_key, k, curve), curve)
     return c1, c2
 
+# Déchiffrement du message (modifié pour utiliser multiply_point)
 def decrypt_point(c1, c2, private_key, curve):
-    """
-    Déchiffre un point en utilisant la clé privée.
-    """
-    s = c1
-    for _ in range(private_key - 1):
-        s = point_addition(s, c1, curve)
-
-    # Inverser le point s
+    s = multiply_point(c1, private_key, curve)
     s_inverse = Point(s.x, -s.y % curve.p)
-
-    # Additionner c2 et s_inverse pour obtenir le point original
     original_point = point_addition(c2, s_inverse, curve)
     return original_point
 
