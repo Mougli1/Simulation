@@ -445,13 +445,36 @@ def vigenere_cipher(root):
 
 # Main GUI
 
+
 def main():
     root = tk.Tk()
     root.title("Application de Cryptographie")
 
-    algorithm_choice = ttk.Combobox(root, values=["RSA", "ECC", "Fernet", "Quantum Key Distribution", "Vigenère Cipher"])
-    algorithm_choice.pack()
+    # Configuration du style
+    style = ttk.Style()
+    style.theme_use('clam')
+    style.configure('TCombobox', font=('Helvetica', 12))
+    style.configure
+    # Suite de la configuration du style
+    style.configure('TButton', font=('Helvetica', 12), background='#4CAF50', foreground='white')
+    style.configure('TLabel', font=('Helvetica', 12), background='#333333', foreground='#ffffff')
 
+    # Configuration de la fenêtre principale
+    root.configure(bg='#333333')
+    root.geometry("400x250")  # Taille de la fenêtre
+
+    # Titre
+    title = ttk.Label(root, text="Choisissez un Algorithme de Cryptographie", background='#333333',
+                      foreground='#ffffff', font=('Helvetica', 16))
+    title.pack(pady=20)
+
+    # Sélection de l'algorithme
+    algorithm_choice = ttk.Combobox(root,
+                                    values=["RSA", "ECC", "Fernet", "Quantum Key Distribution", "Vigenère Cipher"],
+                                    state='readonly', font=('Helvetica', 12))
+    algorithm_choice.pack(pady=10)
+
+    # Fonction de sélection
     def select_algorithm(event):
         selected_algo = algorithm_choice.get()
         if selected_algo == "RSA":
@@ -460,16 +483,38 @@ def main():
             ecc_algorithm()
         elif selected_algo == "Fernet":
             fernet_algorithm()
-        elif selected_algo == "Quantum":
+        elif selected_algo == "Quantum Key Distribution":
             quantum_key_distribution()
-        elif selected_algo=="Vigénère":
+        elif selected_algo == "Vigenère Cipher":
             vigenere_cipher()
-
-        # ... autres conditions pour les autres algorithmes ...
 
     algorithm_choice.bind("<<ComboboxSelected>>", select_algorithm)
 
+    # Bouton pour lancer l'algorithme
+    start_button = ttk.Button(root, text="Lancer", command=lambda: select_algorithm(None))
+    start_button.pack(pady=20)
+
     root.mainloop()
+
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
