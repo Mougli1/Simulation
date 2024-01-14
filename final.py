@@ -11,7 +11,7 @@ from cryptography.hazmat.primitives.kdf.hkdf import HKDF
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives import padding
 import os
-
+from PIL import Image, ImageTk
 from ANIMATEDRSA import encrypt, decrypt
 
 def is_prime(n, k=128):
@@ -446,36 +446,38 @@ def vigenere_cipher(root):
 # Main GUI
 
 
+
 def main():
     root = tk.Tk()
     root.title("Application de Cryptographie")
 
     # Configuration du style
     style = ttk.Style()
-    style.theme_use('clam')
-    style.configure('TCombobox', font=('Helvetica', 12))
-    style.configure
-    # Suite de la configuration du style
-    style.configure('TButton', font=('Helvetica', 12), background='#4CAF50', foreground='white')
-    style.configure('TLabel', font=('Helvetica', 12), background='#333333', foreground='#ffffff')
+    style.theme_use('alt')
+    style.configure('TFrame', background='#2c3e50')
+    style.configure('TLabel', background='#2c3e50', foreground='white', font=('Helvetica', 12))
+    style.configure('TButton', font=('Helvetica', 12), borderwidth='1')
+    style.map('TButton', background=[('active', '#16a085'), ('!disabled', '#1abc9c')], foreground=[('active', 'white')])
+    style.configure('TCombobox', fieldbackground='#2c3e50', background='#16a085', foreground='white', arrowcolor='white')
 
     # Configuration de la fenêtre principale
-    root.configure(bg='#333333')
-    root.geometry("400x250")  # Taille de la fenêtre
+    root.configure(bg='#2c3e50')
+    root.geometry("500x300")  # Taille de la fenêtre
+
+    # Cadre principal
+    main_frame = ttk.Frame(root)
+    main_frame.pack(padx=10, pady=10, fill='both', expand=True)
 
     # Titre
-    title = ttk.Label(root, text="Choisissez un Algorithme de Cryptographie", background='#333333',
-                      foreground='#ffffff', font=('Helvetica', 16))
+    title = ttk.Label(main_frame, text="Choisissez un Algorithme de Cryptographie", font=('Helvetica', 16, 'bold'))
     title.pack(pady=20)
 
     # Sélection de l'algorithme
-    algorithm_choice = ttk.Combobox(root,
-                                    values=["RSA", "ECC", "Fernet", "Quantum Key Distribution", "Vigenère Cipher"],
-                                    state='readonly', font=('Helvetica', 12))
+    algorithm_choice = ttk.Combobox(main_frame, values=["RSA", "ECC", "Fernet", "Quantum Key Distribution", "Vigenère Cipher"], state='readonly')
     algorithm_choice.pack(pady=10)
 
     # Fonction de sélection
-    def select_algorithm(event):
+    def select_algorithm(event=None):
         selected_algo = algorithm_choice.get()
         if selected_algo == "RSA":
             rsa_algorithm()
@@ -484,21 +486,28 @@ def main():
         elif selected_algo == "Fernet":
             fernet_algorithm()
         elif selected_algo == "Quantum Key Distribution":
-            quantum_key_distribution()
+            quantum_key_distribution(root)
         elif selected_algo == "Vigenère Cipher":
-            vigenere_cipher()
+            vigenere_cipher(root)
 
     algorithm_choice.bind("<<ComboboxSelected>>", select_algorithm)
 
     # Bouton pour lancer l'algorithme
-    start_button = ttk.Button(root, text="Lancer", command=lambda: select_algorithm(None))
+    start_button = ttk.Button(main_frame, text="Lancer", command=select_algorithm)
     start_button.pack(pady=20)
 
-    root.mainloop()
+    # Pied de page
+    footer_frame = ttk.Frame(main_frame, style='TFrame')
+    footer_frame.pack(fill='x', side='bottom')
+    footer_label = ttk.Label(footer_frame, text="Application de Cryptographie", style='TLabel')
+    footer_label.pack(side='right', padx=10, pady=5)
 
+    # Lancement de la boucle principale de l'application
+    root.mainloop()
 
 if __name__ == "__main__":
     main()
+
 
 
 
