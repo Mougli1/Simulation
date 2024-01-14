@@ -1,3 +1,5 @@
+#code fonctionnel
+
 def generate_key(message, key):
     key = list(key)
     if len(message) == len(key):

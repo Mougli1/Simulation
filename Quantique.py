@@ -1,3 +1,5 @@
+#code fonctionnel
+
 import random
 
 def generate_bits_and_bases(length):

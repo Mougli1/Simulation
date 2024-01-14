@@ -1,3 +1,5 @@
+#code non fonctionnel
+
 import hashlib
 import secrets
 

@@ -1,3 +1,4 @@
+#code presque fonctionnel
 import numpy as np
 
 def generate_private_key(size=4):

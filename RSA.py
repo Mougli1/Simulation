@@ -1,3 +1,5 @@
+#code non fonctionnel
+
 import random
 
 def is_prime(n):
