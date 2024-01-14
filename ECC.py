@@ -1,7 +1,7 @@
 #code fonctionnel extrêmement complexe
 
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, font
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.primitives import hashes, serialization
@@ -9,7 +9,10 @@ from cryptography.hazmat.primitives.kdf.hkdf import HKDF
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives import padding
 import os
-
+# Déclaration des variables globales
+message_entry = None
+encrypted_entry = None
+result_label = None
 def generate_keys():
     # Générer une clé privée pour l'utilisateur
     private_key = ec.generate_private_key(ec.SECP384R1(), default_backend())
@@ -105,27 +108,46 @@ def decrypt_message():
     except Exception as e:
         messagebox.showerror("Erreur", f"Déchiffrement échoué: {str(e)}")
 
-root = tk.Tk()
-root.title("Application de Cryptographie ECC")
 
-generate_keys_button = tk.Button(root, text="Générer des clés ECC", command=generate_keys)
-generate_keys_button.pack()
+def create_main_window():
+    global message_entry, encrypted_entry, result_label
 
-tk.Label(root, text="Message à chiffrer:").pack()
-message_entry = tk.Entry(root, width=50)
-message_entry.pack()
+    root = tk.Tk()
+    root.title("Application de Cryptographie ECC")
 
-encrypt_button = tk.Button(root, text="Chiffrer", command=encrypt_message)
-encrypt_button.pack()
+    main_font = font.Font(family="Arial", size=12)
 
-tk.Label(root, text="Message chiffré à déchiffrer:").pack()
-encrypted_entry = tk.Entry(root, width=50)
-encrypted_entry.pack()
+    # Cadre pour les clés
+    frame_keys = tk.Frame(root, padx=5, pady=5)
+    generate_keys_button = tk.Button(frame_keys, text="Générer des clés ECC", command=generate_keys, font=main_font)
+    generate_keys_button.pack(fill=tk.X)
+    frame_keys.pack(fill=tk.X)
 
-decrypt_button = tk.Button(root, text="Déchiffrer", command=decrypt_message)
-decrypt_button.pack()
+     # Cadre pour le chiffrement
+    frame_encrypt = tk.Frame(root, padx=5, pady=5)
+    tk.Label(frame_encrypt, text="Message à chiffrer:", font=main_font).pack(anchor='w')
+    message_entry = tk.Entry(frame_encrypt, width=50, font=main_font)
+    message_entry.pack(fill=tk.X)
+    encrypt_button = tk.Button(frame_encrypt, text="Chiffrer", command=encrypt_message, font=main_font)
+    encrypt_button.pack(fill=tk.X)
+    frame_encrypt.pack(fill=tk.X)
 
-result_label = tk.Label(root, text="")
-result_label.pack()
+    # Cadre pour le déchiffrement
+    frame_decrypt = tk.Frame(root, padx=5, pady=5)
+    tk.Label(frame_decrypt, text="Message chiffré à déchiffrer:", font=main_font).pack(anchor='w')
+    encrypted_entry = tk.Entry(frame_decrypt, width=50, font=main_font)
+    encrypted_entry.pack(fill=tk.X)
+    decrypt_button = tk.Button(frame_decrypt, text="Déchiffrer", command=decrypt_message, font=main_font)
+    decrypt_button.pack(fill=tk.X)
+    frame_decrypt.pack(fill=tk.X)
 
+    # Résultat
+    frame_result = tk.Frame(root, padx=5, pady=5)
+    result_label = tk.Label(frame_result, text="", font=main_font)
+    result_label.pack()
+    frame_result.pack(fill=tk.X)
+
+    return root
+
+root = create_main_window()
 root.mainloop()
