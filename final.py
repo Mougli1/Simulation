@@ -1,4 +1,6 @@
-import tkinter as tk
+#code fonctionnel
+#pip install cryptography
+#pip install pillow
 import tkinter as tk
 from tkinter import ttk, messagebox, font
 import random
