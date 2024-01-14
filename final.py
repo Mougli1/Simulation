@@ -356,6 +356,7 @@ def quantum_key_distribution(root):
     # Vérification de la correspondance des clés
     print("Alice's Key:", alice_key)
     print("Bob's Key  :", bob_key)
+    # Affichage des résultats
     result_window = tk.Toplevel(root)
     result_window.title("Quantum Key Distribution Results")
     tk.Label(result_window, text=f"Alice's Key: {alice_key}").pack()
@@ -415,29 +416,6 @@ def vigenere_cipher(root):
 
     # Interface graphique pour le chiffrement de Vigenère
 
-    vigenere_window = tk.Toplevel(root)
-    vigenere_window.title("Vigenère Cipher")
-    tk.Label(vigenere_window, text="Enter Message:").pack()
-    message_entry = tk.Entry(vigenere_window, width=50)
-    message_entry.pack()
-
-    tk.Label(vigenere_window, text="Enter Key:").pack()
-    key_entry = tk.Entry(vigenere_window, width=50)
-    key_entry.pack()
-
-    result_label = tk.Label(vigenere_window, text="")
-    result_label.pack()
-
-    def encrypt_and_decrypt():
-        message = message_entry.get()
-        key = key_entry.get()
-        generated_key = generate_key(message, key)
-        encrypted_message = cipher_text(message, generated_key)
-        decrypted_message = original_text(encrypted_message, generated_key)
-        result_label.config(text=f"Encrypted: {encrypted_message}\nDecrypted: {decrypted_message}")
-
-    encrypt_decrypt_button = tk.Button(vigenere_window, text="Encrypt & Decrypt", command=encrypt_and_decrypt)
-    encrypt_decrypt_button.pack()
     # Intégrer ici le code du chiffre de Vigenère
     pass
 
@@ -469,7 +447,7 @@ def main():
     main_frame.pack(padx=10, pady=10, fill='both', expand=True)
 
     # Titre
-    title = ttk.Label(main_frame, text="Choisissez un Algorithme de Cryptographie", font=('Helvetica', 16, 'bold'))
+    title = ttk.Label(main_frame, text="Choisissez un Algorithme de Cryptographie", font=('Helvetica', 12, 'bold'))
     title.pack(pady=20)
 
     # Sélection de l'algorithme
