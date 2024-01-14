@@ -1,6 +1,30 @@
-#code fonctionnel
-#pip install cryptography
-#pip install pillow
+"""
+===============================================================================
+Projet : Simulation de Cryptographie
+Groupe : G10D
+Date de Création : Janvier 2024
+===============================================================================
+
+Description:
+    Ce programme est une application de cryptographie développée par le groupe
+    G10D. Il implémente plusieurs algorithmes de cryptographie, notamment RSA,
+    la cryptographie sur les courbes elliptiques, Fernet, Distribution 
+    quantique de clé et le Chiffrement de Vigenère.
+
+Dépendances:
+    - tkinter
+    - cryptography
+    - Pillow
+    - random
+    - os
+
+Usage:
+    Avant le lancement de l'application, veuillez lire le manuel d'utilisation.
+    Pour lancer l'application, exécutez le fichier 'Main.py'. L'interface 
+    graphique permet à l'utilisateur de choisir et de simuler différents 
+    algorithmes de cryptographie.
+
+"""
 import tkinter as tk
 from tkinter import ttk, messagebox, font
 import random
