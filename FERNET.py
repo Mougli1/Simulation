@@ -1,39 +1,62 @@
-#code fonctionnel
-
+import tkinter as tk
+from tkinter import messagebox
 from cryptography.fernet import Fernet
 
 def generate_key():
-    """
-    Génère une clé secrète pour le chiffrement.
-    """
-    return Fernet.generate_key()
+    key = Fernet.generate_key()
+    key_entry.delete(0, tk.END)
+    key_entry.insert(0, key.decode())
 
-def encrypt_message(message, key):
-    """
-    Chiffre un message avec une clé donnée.
-    """
-    f = Fernet(key)
+def encrypt_message():
+    key = key_entry.get()
+    message = message_entry.get()
+    if not key or not message:
+        messagebox.showerror("Erreur", "La clé et le message sont requis")
+        return
+    f = Fernet(key.encode())
     encrypted_message = f.encrypt(message.encode())
-    return encrypted_message
+    result_label.config(text=f"Message chiffré: {encrypted_message.decode()}")
+    encrypted_entry.delete(0, tk.END)
+    encrypted_entry.insert(0, encrypted_message.decode())
 
-def decrypt_message(encrypted_message, key):
-    """
-    Déchiffre un message avec une clé donnée.
-    """
-    f = Fernet(key)
-    decrypted_message = f.decrypt(encrypted_message).decode()
-    return decrypted_message
+def decrypt_message():
+    key = key_entry.get()
+    encrypted_message = encrypted_entry.get()
+    if not key or not encrypted_message:
+        messagebox.showerror("Erreur", "La clé et le message chiffré sont requis")
+        return
+    f = Fernet(key.encode())
+    try:
+        decrypted_message = f.decrypt(encrypted_message.encode()).decode()
+        result_label.config(text=f"Message déchiffré: {decrypted_message}")
+    except:
+        messagebox.showerror("Erreur", "Déchiffrement échoué. Vérifiez la clé et le message chiffré.")
 
-def main():
-    key = generate_key()
-    print(f"Clé générée : {key.decode()}")
+# Configuration de l'interface graphique
+root = tk.Tk()
+root.title("Application de Cryptographie")
 
-    message = input("Entrez un message à chiffrer: ")
-    encrypted = encrypt_message(message, key)
-    print(f"Message chiffré: {encrypted.decode()}")
+tk.Label(root, text="Clé:").pack()
+key_entry = tk.Entry(root, width=50)
+key_entry.pack()
+generate_key_button = tk.Button(root, text="Générer une clé", command=generate_key)
+generate_key_button.pack()
 
-    decrypted = decrypt_message(encrypted, key)
-    print(f"Message déchiffré: {decrypted}")
+tk.Label(root, text="Message à chiffrer:").pack()
+message_entry = tk.Entry(root, width=50)
+message_entry.pack()
 
-if __name__ == "__main__":
-    main()
+encrypt_button = tk.Button(root, text="Chiffrer", command=encrypt_message)
+encrypt_button.pack()
+
+tk.Label(root, text="Message chiffré à déchiffrer:").pack()
+encrypted_entry = tk.Entry(root, width=50)
+encrypted_entry.pack()
+
+decrypt_button = tk.Button(root, text="Déchiffrer", command=decrypt_message)
+decrypt_button.pack()
+
+result_label = tk.Label(root, text="")
+result_label.pack()
+
+root.mainloop()
