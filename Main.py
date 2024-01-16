@@ -119,23 +119,23 @@ def rsa_algorithm():
 
 
     rsa_window = tk.Toplevel()
-    rsa_window.title("RSA Encryption/Decryption")
+    rsa_window.title("RSA")
     rsa_window.configure(bg="#333333")
     customFont = font.Font(family="Helvetica", size=12)
 
-    lbl_input = tk.Label(rsa_window, text="Enter Message:", bg="#333333", fg="#ffffff", font=customFont)
+    lbl_input = tk.Label(rsa_window, text="Entrez un message:", bg="#333333", fg="#ffffff", font=customFont)
     lbl_input.pack(pady=10)
     txt_input = tk.Text(rsa_window, height=5, width=40, font=customFont)
     txt_input.pack(padx=10, pady=10)
-    btn_encrypt = tk.Button(rsa_window, text="Encrypt", command=encrypt_message, font=customFont, bg="#4CAF50", fg="white")
+    btn_encrypt = tk.Button(rsa_window, text="Chiffrement", command=encrypt_message, font=customFont, bg="#4CAF50", fg="white")
     btn_encrypt.pack(pady=5)
-    lbl_encrypted = tk.Label(rsa_window, text="Encrypted Message:", bg="#333333", fg="#ffffff", font=customFont)
+    lbl_encrypted = tk.Label(rsa_window, text="Message chiffré:", bg="#333333", fg="#ffffff", font=customFont)
     lbl_encrypted.pack(pady=10)
     txt_encrypted = tk.Text(rsa_window, height=5, width=40, font=customFont)
     txt_encrypted.pack(padx=10, pady=10)
-    btn_decrypt = tk.Button(rsa_window, text="Decrypt", command=decrypt_message, font=customFont, bg="#008CBA", fg="white")
+    btn_decrypt = tk.Button(rsa_window, text="Déchiffrement", command=decrypt_message, font=customFont, bg="#008CBA", fg="white")
     btn_decrypt.pack(pady=5)
-    lbl_decrypted = tk.Label(rsa_window, text="Decrypted Message:", bg="#333333", fg="#ffffff", font=customFont)
+    lbl_decrypted = tk.Label(rsa_window, text="Messag déchiffré:", bg="#333333", fg="#ffffff", font=customFont)
     lbl_decrypted.pack(pady=10)
     txt_decrypted = tk.Text(rsa_window, height=5, width=40, font=customFont)
     txt_decrypted.pack(padx=10, pady=10)
@@ -384,9 +384,9 @@ def quantum_key_distribution(root):
     print("Bob's Key  :", bob_key)
     # Affichage des résultats
     result_window = tk.Toplevel(root)
-    result_window.title("Quantum Key Distribution Results")
-    tk.Label(result_window, text=f"Alice's Key: {alice_key}").pack()
-    tk.Label(result_window, text=f"Bob's Key  : {bob_key}").pack()
+    result_window.title("Quantum Key Distribution résultats")
+    tk.Label(result_window, text=f"Clé de Alice: {alice_key}").pack()
+    tk.Label(result_window, text=f"Clé de Bob  : {bob_key}").pack()
 pass
 
 def vigenere_cipher(root):
