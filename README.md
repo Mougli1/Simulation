@@ -1,7 +1,7 @@
 # Cryptography Simulation Project
 
 ## Overview
-This program is a cryptography application developed by Group G10D. It showcases the implementation of various cryptography algorithms including RSA, Elliptic Curve Cryptography (ECC), Fernet encryption, Quantum Key Distribution, and the Vigenère Cipher.
+This program is a cryptography application developed by Merbouche Mouloud. It showcases the implementation of various cryptography algorithms including RSA, Elliptic Curve Cryptography (ECC), Fernet encryption, Quantum Key Distribution, and the Vigenère Cipher.
 
 ## Final Score
 The project was awarded a final grade of 19/20.
